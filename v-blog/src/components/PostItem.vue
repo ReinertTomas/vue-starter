@@ -1,0 +1,34 @@
+<template>
+  <article class="media">
+    <div class="media-content">
+      <div class="content">
+        <router-link :to="{ name: 'Detail', params: { id: post.id } }">
+          <h3 class="title is-4 mb-2">{{ post.title }}</h3>
+        </router-link>
+        <p>{{ snippet }}</p>
+        <div class="tags are-medium">
+          <span class="tag is-primary" v-for="tag in post.tags" :key="tag">
+            #{{ tag }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </article>
+</template>
+
+<script>
+import { computed } from "vue";
+export default {
+  name: "PostItem",
+  props: ["post"],
+  setup(props) {
+    const snippet = computed(() => {
+      return props.post.body.substring(0, 100) + "...";
+    });
+
+    return {
+      snippet,
+    };
+  },
+};
+</script>

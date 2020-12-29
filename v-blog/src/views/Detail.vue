@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <section class="section">
-      <h2 class="title is-3">Async / Await</h2>
       <div v-if="error" class="notification is-danger">{{ error }}</div>
-      <div v-if="posts.length" class="mb-5">
-        <PostList :posts="posts" />
+      <div v-if="post">
+        <h3 class="title is-3">{{ post.title }}</h3>
+        <p>{{ post.body }}</p>
       </div>
       <div v-else>
         <Spinner />
@@ -14,24 +14,22 @@
 </template>
 
 <script>
-import PostList from "@/components/PostList.vue";
-import getPosts from "@/hooks/getPosts";
+import getPost from "@/hooks/getPost";
 import Spinner from "@/components/Spinner.vue";
 
 export default {
-  name: "Home",
+  name: "Detail",
   components: {
-    PostList,
     Spinner,
   },
-  setup() {
-    // Async / Await
-    const { posts, error, load } = getPosts();
+  props: ["id"],
+  setup(props) {
+    const { post, error, load } = getPost(props.id);
 
     load();
 
     return {
-      posts,
+      post,
       error,
     };
   },
