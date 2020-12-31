@@ -52,7 +52,7 @@
 
 <script>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import addPost from "@/hooks/addPost";
 
 export default {
   name: "Create",
@@ -70,30 +70,16 @@ export default {
       tag.value = "";
     };
 
-    const router = useRouter();
-    const error = ref(null);
+    const { error, add } = addPost();
 
-    const handleFormSubmit = async () => {
+    const handleFormSubmit = () => {
       const post = {
         title: title.value,
         body: body.value,
         tags: tags.value,
       };
 
-      try {
-        await fetch("http://localhost:3000/posts", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(post),
-        });
-      } catch (err) {
-        error.value = err.message;
-        console.error(error.value);
-      }
-
-      router.push({ name: "Home" });
+      add(post);
     };
 
     return {

@@ -13,21 +13,34 @@
         </div>
       </div>
     </div>
+    <div class="media-right">
+      <button class="delete" @click="handleRemovePost"></button>
+    </div>
   </article>
 </template>
 
 <script>
 import { computed } from "vue";
+import removePost from "@/hooks/removePost";
+
 export default {
   name: "PostItem",
   props: ["post"],
-  setup(props) {
+  setup(props, { emit }) {
     const snippet = computed(() => {
       return props.post.body.substring(0, 100) + "...";
     });
 
+    const { error, remove } = removePost(props.post.id, emit);
+
+    const handleRemovePost = () => {
+      remove();
+    };
+
     return {
       snippet,
+      handleRemovePost,
+      error,
     };
   },
 };

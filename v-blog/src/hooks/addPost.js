@@ -1,16 +1,14 @@
 // import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const addPost = post => {
+const addPost = () => {
+  const router = useRouter();
   const error = ref(null);
 
-  const add = async () => {
+  const add = async post => {
     try {
-      await new Promise(resolve => {
-        setTimeout(resolve, 2000);
-      });
-
-      let res = await fetch("http://localhost:3000/posts", {
+      let response = await fetch("http://localhost:3000/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -18,12 +16,13 @@ const addPost = post => {
         body: JSON.stringify(post),
       });
 
-      if (!res.ok) {
-        throw Error("Post not saved.");
+      if (!response.ok) {
+        throw Error("Error post add.");
       }
 
-      console.log(res);
-      // await router.push({ name: ''});
+      const data = await response.json();
+
+      router.push({ name: "Detail", params: { id: data.id } });
     } catch (err) {
       error.value = err.message;
       console.error(err.value);

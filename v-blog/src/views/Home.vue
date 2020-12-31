@@ -2,38 +2,18 @@
   <div class="container">
     <section class="section">
       <h2 class="title is-3">Async / Await</h2>
-      <div v-if="error" class="notification is-danger">{{ error }}</div>
-      <div v-if="posts.length" class="mb-5">
-        <PostList :posts="posts" />
-      </div>
-      <div v-else>
-        <Spinner />
-      </div>
+      <PostList />
     </section>
   </div>
 </template>
 
 <script>
 import PostList from "@/components/PostList.vue";
-import getPosts from "@/hooks/getPosts";
-import Spinner from "@/components/Spinner.vue";
 
 export default {
   name: "Home",
   components: {
     PostList,
-    Spinner,
-  },
-  setup() {
-    // Async / Await
-    const { posts, error, load } = getPosts();
-
-    load();
-
-    return {
-      posts,
-      error,
-    };
   },
 };
 </script>
