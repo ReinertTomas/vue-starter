@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { useRoute } from "vue-router";
 import Spinner from "@/components/Spinner.vue";
 import usePost from "@/hooks/usePost";
 
@@ -22,11 +23,12 @@ export default {
   components: {
     Spinner,
   },
-  props: ["id"],
-  setup(props) {
+  setup() {
+    const route = useRoute();
+
     const { post, error, getPost } = usePost();
 
-    getPost(props.post.id);
+    getPost(route.params.id);
 
     return {
       post,
