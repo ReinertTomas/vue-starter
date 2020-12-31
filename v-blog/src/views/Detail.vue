@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import getPost from "@/hooks/getPost";
 import Spinner from "@/components/Spinner.vue";
+import usePost from "@/hooks/usePost";
 
 export default {
   name: "Detail",
@@ -24,9 +24,9 @@ export default {
   },
   props: ["id"],
   setup(props) {
-    const { post, error, load } = getPost(props.id);
+    const { post, error, getPost } = usePost();
 
-    load();
+    getPost(props.post.id);
 
     return {
       post,

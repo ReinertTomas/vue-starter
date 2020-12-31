@@ -52,7 +52,8 @@
 
 <script>
 import { ref } from "vue";
-import addPost from "@/hooks/addPost";
+import { useRouter } from "vue-router";
+import usePost from "@/hooks/usePost";
 
 export default {
   name: "Create",
@@ -62,6 +63,8 @@ export default {
     const tag = ref("");
     const tags = ref([]);
 
+    const router = useRouter();
+
     const handleKeydown = () => {
       if (!tags.value.includes(tag.value)) {
         tag.value = tag.value.replace(/\s/, "");
@@ -70,16 +73,18 @@ export default {
       tag.value = "";
     };
 
-    const { error, add } = addPost();
+    const { error, addPost } = usePost();
 
     const handleFormSubmit = () => {
-      const post = {
+      let data = {
         title: title.value,
         body: body.value,
         tags: tags.value,
       };
 
-      add(post);
+      addPost(data);
+
+      router.push({ name: "Home" });
     };
 
     return {
