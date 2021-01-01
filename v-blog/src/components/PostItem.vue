@@ -7,9 +7,13 @@
         </router-link>
         <p>{{ snippet }}</p>
         <div class="tags are-medium">
-          <span class="tag is-primary" v-for="tag in post.tags" :key="tag">
-            #{{ tag }}
-          </span>
+          <router-link
+            v-for="tag in post.tags"
+            :key="tag"
+            :to="{ name: 'Tag', params: { tag: tag } }"
+            class="tag is-primary"
+            >#{{ tag }}</router-link
+          >
         </div>
       </div>
     </div>
