@@ -1,4 +1,5 @@
 <template>
+  <div class="notification is-danger" v-if="state.error">{{ state.error }}</div>
   <form @submit.prevent="handleFormSubmit">
     <div class="field">
       <label class="label">Name</label>
@@ -8,7 +9,7 @@
           type="text"
           placeholder="Name"
           required
-          v-model="data.name"
+          v-model="data.displayName"
         />
         <span class="icon is-small is-left">
           <i class="fas fa-user"></i>
@@ -18,25 +19,6 @@
         </span>
       </div>
       <p class="help is-danger is-hidden">This name is invalid</p>
-    </div>
-    <div class="field">
-      <label class="label">Surname</label>
-      <div class="control has-icons-left has-icons-right">
-        <input
-          class="input"
-          type="text"
-          placeholder="Surname"
-          required
-          v-model="data.surname"
-        />
-        <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
-        </span>
-        <span class="icon is-small is-right is-hidden">
-          <i class="fas fa-exclamation-triangle"></i>
-        </span>
-      </div>
-      <p class="help is-danger is-hidden">This email is invalid</p>
     </div>
     <div class="field">
       <label class="label">Email</label>
@@ -79,10 +61,7 @@
     <hr />
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link">Login</button>
-      </div>
-      <div class="control">
-        <button class="button is-link is-light">Cancel</button>
+        <button class="button is-link">Register</button>
       </div>
     </div>
   </form>
@@ -90,23 +69,26 @@
 
 <script>
 import { reactive } from "vue";
+import useSignUp from "@/hooks/useSignUp";
 
 export default {
   setup() {
     const data = reactive({
-      name: "John",
-      surname: "Doe",
-      email: "john.doe@example.com",
-      password: "123456",
+      displayName: "",
+      email: "",
+      password: "",
     });
 
-    const handleFormSubmit = () => {
-      console.log(data);
+    const { state, signUp } = useSignUp();
+
+    const handleFormSubmit = async () => {
+      await signUp(data.email, data.password, data.displayName);
     };
 
     return {
       data,
       handleFormSubmit,
+      state,
     };
   },
 };

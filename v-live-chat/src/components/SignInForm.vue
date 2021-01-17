@@ -1,4 +1,5 @@
 <template>
+  <div class="notification is-danger" v-if="state.error">{{ state.error }}</div>
   <form @submit.prevent="handleFormSubmit">
     <div class="field">
       <label class="label">Email</label>
@@ -52,6 +53,7 @@
 
 <script>
 import { reactive } from "vue";
+import useSignIn from "@/hooks/useSignIn";
 
 export default {
   setup() {
@@ -60,13 +62,20 @@ export default {
       password: "123456",
     });
 
-    const handleFormSubmit = () => {
-      console.log(data);
+    const { state, signIn } = useSignIn();
+
+    const handleFormSubmit = async () => {
+      signIn(data.email, data.password);
+
+      if (!state.error) {
+        console.log("user signed in");
+      }
     };
 
     return {
       data,
       handleFormSubmit,
+      state,
     };
   },
 };
